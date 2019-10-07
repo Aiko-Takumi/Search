@@ -1,0 +1,31 @@
+digraph {
+  "L.A.Airport [0]" -> "UCLA [7]" [label = 1]
+  "L.A.Airport [0]" -> "Hoolywood [4]" [label = 3]
+  "UCLA [7]" -> "Hoolywood [4]" [label = 1]
+  "UCLA [7]" -> "Downtown [3]" [label = 6]
+  "Hoolywood [4]" -> "Anaheim [6]" [label = 6]
+  "Hoolywood [4]" -> "Downtown [3]" [label = 6]
+  "Hoolywood [4]" -> "Pasadena [4]" [label = 3]
+  "Anaheim [6]" -> "GrandCanyon [1]" [label = 5]
+  "Anaheim [6]" -> "Pasadena [4]" [label = 2]
+  "Anaheim [6]" -> "DisneyLand [2]" [label = 4]
+  "GrandCanyon [1]" -> "DisneyLand [2]" [label = 2]
+  "GrandCanyon [1]" -> "LasVegas [0]" [label = 1]
+  "SanDiego [2]" -> "UCLA [7]" [label = 1]
+  "Downtown [3]" -> "SanDiego [2]" [label = 7]
+  "Downtown [3]" -> "Pasadena [4]" [label = 2]
+  "Pasadena [4]" -> "DisneyLand [2]" [label = 1]
+  "Pasadena [4]" -> "LasVegas [0]" [label = 7]
+  "DisneyLand [2]" -> "LasVegas [0]" [label = 5]
+}
+// (L.A.Airport) as 0
+// (UCLA)  as 1
+// (Hoolywood) as 2
+// (Anaheim) as 3
+// (GrandCanyon) as 4
+// (SanDiego) as 5
+// (Downtown) as 6
+// (Pasadena) as 7
+// (DisneyLand) as 8
+// (LasVegas) as 9
+//
