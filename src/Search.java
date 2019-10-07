@@ -5,44 +5,52 @@ public class Search {
 	Node goal;
 	Node start;
 
-	Search() {
-		makeStateSpace();
+	Search(boolean rand) {
+		makeStateSpace(rand);
 	}
 
-	private void makeStateSpace() {
+  private int random(boolean rand, int def){
+    return rand ? (int)(Math.random()*10):def;
+  }
+	private void makeStateSpace(boolean rand) {
 		node = new Node[10];
 		// 状態空間の生成
 		node[0] = new Node("L.A.Airport", 0);
-		node[1] = new Node("UCLA", 7);
-		node[2] = new Node("Hoolywood", 4);
-		node[3] = new Node("Anaheim", 6);
-		node[4] = new Node("GrandCanyon", 1);
-		node[5] = new Node("SanDiego", 2);
-		node[6] = new Node("Downtown", 3);
-		node[7] = new Node("Pasadena", 4);
-		node[8] = new Node("DisneyLand", 2);
+		node[1] = new Node("UCLA", random(rand, 7));
+		node[2] = new Node("Hoolywood", random(rand, 4));
+		node[3] = new Node("Anaheim", random(rand, 6));
+		node[4] = new Node("GrandCanyon", random(rand, 1));
+		node[5] = new Node("SanDiego", random(rand, 2));
+		node[6] = new Node("Downtown", random(rand, 3));
+		node[7] = new Node("Pasadena", random(rand, 4));
+		node[8] = new Node("DisneyLand", random(rand, 2));
 		node[9] = new Node("Las Vegas", 0);
 		start = node[0];
 		goal = node[9];
 
-		node[0].addChild(node[1], 1);
-		node[0].addChild(node[2], 3);
-		node[1].addChild(node[2], 1);
-		node[1].addChild(node[6], 6);
-		node[2].addChild(node[3], 6);
-		node[2].addChild(node[6], 6);
-		node[2].addChild(node[7], 3);
-		node[3].addChild(node[4], 5);
-		node[3].addChild(node[7], 2);
-		node[3].addChild(node[8], 4);
-		node[4].addChild(node[8], 2);
-		node[4].addChild(node[9], 1);
-		node[5].addChild(node[1], 1);
-		node[6].addChild(node[5], 7);
-		node[6].addChild(node[7], 2);
-		node[7].addChild(node[8], 1);
-		node[7].addChild(node[9], 7);
-		node[8].addChild(node[9], 5);
+		node[0].addChild(node[1], random(rand, 1));
+		node[0].addChild(node[2], random(rand, 3));
+		node[1].addChild(node[2], random(rand, 1));
+		node[1].addChild(node[6], random(rand, 6));
+		node[2].addChild(node[3], random(rand, 6));
+		node[2].addChild(node[6], random(rand, 6));
+		node[2].addChild(node[7], random(rand, 3));
+		node[3].addChild(node[4], random(rand, 5));
+		node[3].addChild(node[7], random(rand, 2));
+		node[3].addChild(node[8], random(rand, 4));
+		node[4].addChild(node[8], random(rand, 2));
+		node[4].addChild(node[9], random(rand, 1));
+		node[5].addChild(node[1], random(rand, 1));
+		node[6].addChild(node[5], random(rand, 7));
+		node[6].addChild(node[7], random(rand, 2));
+		node[7].addChild(node[8], random(rand, 1));
+		node[7].addChild(node[9], random(rand, 7));
+		node[8].addChild(node[9], random(rand, 5));
+
+		for(Node single : node){
+			single.initialize();
+			single.print();
+		}
 	}
 
 	/***
@@ -232,9 +240,12 @@ public class Search {
 
 		// Start を node とする．
 		Node node = start;
-		for (;;) {
+		for (int step = 0;;step++) {
 			// node は ゴールか？
-			if (node == goal) {
+			if (step  == 100){
+				success = false;
+				break;
+			}else if (node == goal) {
 				success = true;
 				break;
 			} else {
@@ -269,6 +280,9 @@ public class Search {
 		if (success) {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
+		}else{
+			System.out.println("*** Failure ***");
+			System.out.println("Over 100 Step");
 		}
 	}
 
@@ -477,9 +491,9 @@ public class Search {
 	}
 
 	public static void main(String[] args) {
-		if (args.length != 1) {
+		if (args.length != 2) {
 			System.out.println("USAGE:");
-			System.out.println("java Search [Number]");
+			System.out.println("java Search [Number] [rand(0 or 1)]");
 			System.out.println("[Number] = 1 : Bredth First Search");
 			System.out.println("[Number] = 2 : Depth  First Search");
 			System.out.println("[Number] = 3 : Branch and Bound Search");
@@ -488,39 +502,42 @@ public class Search {
 			System.out.println("[Number] = 6 : A star Algorithm");
 		} else {
 			int which = Integer.parseInt(args[0]);
-			switch (which) {
-			case 1:
-				// 幅優先探索
-				System.out.println("\nBreadth First Search");
-				(new Search()).breadthFirst();
-				break;
-			case 2:
-				// 深さ優先探索
-				System.out.println("\nDepth First Search");
-				(new Search()).depthFirst();
-				break;
-			case 3:
-				// 分岐限定法
-				System.out.println("\nBranch and Bound Search");
-				(new Search()).branchAndBound();
-				break;
-			case 4:
-				// 山登り法
-				System.out.println("\nHill Climbing Search");
-				(new Search()).hillClimbing();
-				break;
-			case 5:
-				// 最良優先探索
-				System.out.println("\nBest First Search");
-				(new Search()).bestFirst();
-				break;
-			case 6:
-				// A*アルゴリズム
-				System.out.println("\nA star Algorithm");
-				(new Search()).aStar();
-				break;
-			default:
-				System.out.println("Please input numbers 1 to 6");
+			Search search = new Search(Integer.parseInt(args[1]) == 1);
+			for(int i = 1; i < (Integer.parseInt(args[1]) == 1 ? 7 : 2);i++){
+				switch (Integer.parseInt(args[1]) == 1 ? i : which) {
+				case 1:
+					// 幅優先探索
+					System.out.println("\nBreadth First Search");
+					search.breadthFirst();
+					break;
+				case 2:
+					// 深さ優先探索
+					System.out.println("\nDepth First Search");
+					search.depthFirst();
+					break;
+				case 3:
+					// 分岐限定法
+					System.out.println("\nBranch and Bound Search");
+					search.branchAndBound();
+					break;
+				case 4:
+					// 山登り法
+					System.out.println("\nHill Climbing Search");
+					search.hillClimbing();
+					break;
+				case 5:
+					// 最良優先探索
+					System.out.println("\nBest First Search");
+					search.bestFirst();
+					break;
+				case 6:
+					// A*アルゴリズム
+					System.out.println("\nA star Algorithm");
+					search.aStar();
+					break;
+				default:
+					System.out.println("Please input numbers 1 to 6");
+				}
 			}
 		}
 	}
@@ -536,6 +553,18 @@ class Node {
 	int fValue; // 評価値
 	boolean hasGValue = false;
 	boolean hasFValue = false;
+
+	public void print(){
+		System.out.println(this.toString());
+		for(Node child : this.getChildren()){
+			System.out.println("  children:"+child.getName()+":"+this.getCost(child));
+		}
+	}
+
+	public void initialize(){
+		hasGValue = false;
+		hasFValue = false;
+	}
 
 	Node(String theName, int theHValue) {
 		name = theName;
