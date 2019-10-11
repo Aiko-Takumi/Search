@@ -57,6 +57,7 @@ public class Search {
 	 * 幅優先探索
 	 */
 	public void breadthFirst() {
+		long startTime1 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		ArrayList<Node> closed = new ArrayList<Node>();
@@ -104,12 +105,15 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime1 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime1-startTime1)+" ステップ数:"+step);
 	}
 
 	/***
 	 * 深さ優先探索
 	 */
 	public void depthFirst() {
+		long startTime2 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		ArrayList<Node> closed = new ArrayList<Node>();
@@ -163,12 +167,15 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime2 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime2-startTime2)+" パス数:"+step);
 	}
 
 	/***
 	 * 分岐限定法
 	 */
 	public void branchAndBound() {
+		long startTime3 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -226,12 +233,15 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime3 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime3-startTime3)+" ステップ数:"+step);
 	}
 
 	/***
 	 * 山登り法
 	 */
 	public void hillClimbing() {
+		long startTime4 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -240,6 +250,7 @@ public class Search {
 
 		// Start を node とする．
 		Node node = start;
+		int st = 0;
 		for (int step = 0;;step++) {
 			// node は ゴールか？
 			if (step  == 100){
@@ -280,6 +291,8 @@ public class Search {
 		if (success) {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
+			long endTime4 = System.nanoTime();
+			System.out.println("処理時間:"+(endTime4-startTime4)+" ステップ数:"+st);
 		}else{
 			System.out.println("*** Failure ***");
 			System.out.println("Over 100 Step");
@@ -290,6 +303,7 @@ public class Search {
 	 * 最良優先探索
 	 */
 	public void bestFirst() {
+		long startTime5 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -335,12 +349,15 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime5 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime5-startTime5)+" ステップ数:"+step);
 	}
 
 	/***
 	 * A* アルゴリズム
 	 */
 	public void aStar() {
+		long startTime6 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -413,6 +430,8 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime6 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime6-startTime6)+" ステップ数:"+step);
 	}
 
 	
