@@ -5,47 +5,60 @@ public class Search {
 	Node goal;
 	Node start;
 
-	Search(boolean rand) {
+	Search(int rand) {
 		makeStateSpace(rand);
 	}
 
-  private int random(boolean rand, int def){
-    return rand ? (int)(Math.random()*10):def;
-  }
-	private void makeStateSpace(boolean rand) {
+	private int random(boolean rd, int def){
+		return rd ? (int)(Math.random()*10):def;
+	}
+	private void makeStateSpace(int rand) {
+		boolean rd = false;
 		node = new Node[10];
+		
+		if(rand == 1 || rand == 2)
+		{
+			rd = true;
+		}
+		
 		// 状態空間の生成
 		node[0] = new Node("L.A.Airport", 0);
-		node[1] = new Node("UCLA", random(rand, 7));
-		node[2] = new Node("Hoolywood", random(rand, 4));
-		node[3] = new Node("Anaheim", random(rand, 6));
-		node[4] = new Node("GrandCanyon", random(rand, 1));
-		node[5] = new Node("SanDiego", random(rand, 2));
-		node[6] = new Node("Downtown", random(rand, 3));
-		node[7] = new Node("Pasadena", random(rand, 4));
-		node[8] = new Node("DisneyLand", random(rand, 2));
+		node[1] = new Node("UCLA", random(rd, 7));
+		node[2] = new Node("Hoolywood", random(rd, 4));
+		node[3] = new Node("Anaheim", random(rd, 6));
+		node[4] = new Node("GrandCanyon", random(rd, 1));
+		node[5] = new Node("SanDiego", random(rd, 2));
+		node[6] = new Node("Downtown", random(rd, 3));
+		node[7] = new Node("Pasadena", random(rd, 4));
+		node[8] = new Node("DisneyLand", random(rd, 2));
 		node[9] = new Node("Las Vegas", 0);
 		start = node[0];
 		goal = node[9];
+		
+		rd = false;
+		if(rand == 1 || rand == 3)
+		{
+			rd = true;
+		}
 
-		node[0].addChild(node[1], random(rand, 1));
-		node[0].addChild(node[2], random(rand, 3));
-		node[1].addChild(node[2], random(rand, 1));
-		node[1].addChild(node[6], random(rand, 6));
-		node[2].addChild(node[3], random(rand, 6));
-		node[2].addChild(node[6], random(rand, 6));
-		node[2].addChild(node[7], random(rand, 3));
-		node[3].addChild(node[4], random(rand, 5));
-		node[3].addChild(node[7], random(rand, 2));
-		node[3].addChild(node[8], random(rand, 4));
-		node[4].addChild(node[8], random(rand, 2));
-		node[4].addChild(node[9], random(rand, 1));
-		node[5].addChild(node[1], random(rand, 1));
-		node[6].addChild(node[5], random(rand, 7));
-		node[6].addChild(node[7], random(rand, 2));
-		node[7].addChild(node[8], random(rand, 1));
-		node[7].addChild(node[9], random(rand, 7));
-		node[8].addChild(node[9], random(rand, 5));
+		node[0].addChild(node[1], random(rd, 1));
+		node[0].addChild(node[2], random(rd, 3));
+		node[1].addChild(node[2], random(rd, 1));
+		node[1].addChild(node[6], random(rd, 6));
+		node[2].addChild(node[3], random(rd, 6));
+		node[2].addChild(node[6], random(rd, 6));
+		node[2].addChild(node[7], random(rd, 3));
+		node[3].addChild(node[4], random(rd, 5));
+		node[3].addChild(node[7], random(rd, 2));
+		node[3].addChild(node[8], random(rd, 4));
+		node[4].addChild(node[8], random(rd, 2));
+		node[4].addChild(node[9], random(rd, 1));
+		node[5].addChild(node[1], random(rd, 1));
+		node[6].addChild(node[5], random(rd, 7));
+		node[6].addChild(node[7], random(rd, 2));
+		node[7].addChild(node[8], random(rd, 1));
+		node[7].addChild(node[9], random(rd, 7));
+		node[8].addChild(node[9], random(rd, 5));
 
 		for(Node single : node){
 			single.initialize();
@@ -57,6 +70,7 @@ public class Search {
 	 * 幅優先探索
 	 */
 	public void breadthFirst() {
+		long startTime1 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		ArrayList<Node> closed = new ArrayList<Node>();
@@ -104,12 +118,16 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		
+		long endTime1 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime1-startTime1)+" ステップ数:"+ --step);
 	}
 
 	/***
 	 * 深さ優先探索
 	 */
 	public void depthFirst() {
+		long startTime2 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		ArrayList<Node> closed = new ArrayList<Node>();
@@ -163,12 +181,16 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		
+		long endTime2 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime2-startTime2)+" パス数:"+ --step);
 	}
 
 	/***
 	 * 分岐限定法
 	 */
 	public void branchAndBound() {
+		long startTime3 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -226,21 +248,26 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		
+		long endTime3 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime3-startTime3)+" ステップ数:"+ --step);
 	}
 
 	/***
 	 * 山登り法
 	 */
 	public void hillClimbing() {
+		long startTime4 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
 		ArrayList<Node> closed = new ArrayList<Node>();
 		boolean success = false;
+		int step;
 
 		// Start を node とする．
 		Node node = start;
-		for (int step = 0;;step++) {
+		for (step = 0;;step++) {
 			// node は ゴールか？
 			if (step  == 100){
 				success = false;
@@ -284,12 +311,15 @@ public class Search {
 			System.out.println("*** Failure ***");
 			System.out.println("Over 100 Step");
 		}
+		long endTime4 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime4-startTime4)+" ステップ数:"+ --step);
 	}
 
 	/***
 	 * 最良優先探索
 	 */
 	public void bestFirst() {
+		long startTime5 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -335,12 +365,16 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		
+		long endTime5 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime5-startTime5)+" ステップ数:"+ --step);
 	}
 
 	/***
 	 * A* アルゴリズム
 	 */
 	public void aStar() {
+		long startTime6 = System.nanoTime();
 		ArrayList<Node> open = new ArrayList<Node>();
 		open.add(start);
 		start.setGValue(0);
@@ -413,10 +447,12 @@ public class Search {
 			System.out.println("*** Solution ***");
 			printSolution(goal);
 		}
+		long endTime6 = System.nanoTime();
+		System.out.println("処理時間:"+(endTime6-startTime6)+" ステップ数:"+ --step);
 	}
 
-	
-	
+
+
 	/***
 	 * 解の表示
 	 */
@@ -449,7 +485,7 @@ public class Search {
 		return newOpen;
 	}
 
-	
+
 	/***
 	 * ArrayList を Node の gValue の昇順（小さい順）に列べ換える．
 	 */
@@ -493,18 +529,22 @@ public class Search {
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.out.println("USAGE:");
-			System.out.println("java Search [Number] [rand(0 or 1)]");
+			System.out.println("java Search [Number] [rand]");
 			System.out.println("[Number] = 1 : Bredth First Search");
 			System.out.println("[Number] = 2 : Depth  First Search");
 			System.out.println("[Number] = 3 : Branch and Bound Search");
 			System.out.println("[Number] = 4 : Hill Climbing Search");
 			System.out.println("[Number] = 5 : Best First Search");
 			System.out.println("[Number] = 6 : A star Algorithm");
+			System.out.println("[rand] = 0 : default");
+			System.out.println("[rand] = 1 : All random");
+			System.out.println("[rand] = 2 : only heuristic random");
+			System.out.println("[rand] = 3 : only cost random");
 		} else {
 			int which = Integer.parseInt(args[0]);
-			Search search = new Search(Integer.parseInt(args[1]) == 1);
-			for(int i = 1; i < (Integer.parseInt(args[1]) == 1 ? 7 : 2);i++){
-				switch (Integer.parseInt(args[1]) == 1 ? i : which) {
+			Search search = new Search(Integer.parseInt(args[1]));
+			for(int i = 1; i < (Integer.parseInt(args[1]) >= 1 ? 7 : 2);i++){
+				switch (Integer.parseInt(args[1]) >= 1 ? i : which) {
 				case 1:
 					// 幅優先探索
 					System.out.println("\nBreadth First Search");
@@ -607,7 +647,7 @@ class Node {
 		this.fValue = theFValue;
 	}
 
-	
+
 	/***
 	 * theChild この節点の子節点 theCost その子節点までのコスト
 	 */
